@@ -43,7 +43,7 @@ const MealList =()=>{
     )
 
     return(
-        <section className={styles.meal}>
+        <section className={styles.meals}>
           <Card>
             <ul>
                 {mealList}
