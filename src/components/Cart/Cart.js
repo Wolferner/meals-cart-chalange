@@ -9,6 +9,10 @@ const Cart = (props)=>{
 
     const [isSubmitOrderAvailable, setIsSubmitOrderAvailable] = useState(false)
 
+    const [isDataSubmiting, setIsDataSubmiting] = useState(false)
+    const [error, setError] = useState(null)
+    const [wasDataSendingSuccesfull, setWasDataSendingSuccesfull] = useState(false)
+
     const ctx = useContext(CartContext)
 
     const totalAmount = `${ctx.totalAmount.toFixed(2)}`
@@ -25,6 +29,34 @@ const Cart = (props)=>{
 
     const orderHandler = () =>{
         setIsSubmitOrderAvailable(true)
+    }
+
+    const submitOrderHandler = async (userData)=>{
+        setError(null)
+        setIsDataSubmiting(true)
+        setWasDataSendingSuccesfull(false)
+        try{
+            const response = await fetch('https://react-course-project-ffeb9-default-rtdb.europe-west1.firebasedatabase.app/orders.json',{
+                method: 'POST',
+                body: JSON.stringify({
+                    user:userData,
+                    orderedMeals: ctx.items
+                }),
+                headers: {'Content-Type': 'application/json'}
+            })
+            if(!response.ok){
+                throw new Error('Problem with posting')
+            }
+        }catch(er){
+            setError(er.message)
+        }
+
+        ctx.clearCart()
+        setIsDataSubmiting(false)
+        if(!error){
+            setWasDataSendingSuccesfull(true)
+        }
+
     }
 
     const cartItems = (
@@ -45,15 +77,26 @@ const Cart = (props)=>{
             {hasItems && <button className={styles.button} onClick={orderHandler}>Order</button> }
         </div>)
 
-    return(
-        <Modal onHideCart={props.onHideCart}>
+    const modalCart = (
+        <>
             {cartItems}
             <div className={styles.total}>
                 <span>Summ</span>
                 <span>{totalAmount}</span>
             </div>
-            {isSubmitOrderAvailable && <SubmitOrder onCancel={props.onHideCart}/>}
-            {!isSubmitOrderAvailable && modalButtons}
+            {isSubmitOrderAvailable && !isDataSubmiting && <SubmitOrder onSubmit={submitOrderHandler} onCancel={props.onHideCart}/>}
+            {!isSubmitOrderAvailable && !isDataSubmiting && modalButtons}
+        </>
+    )
+
+    return(
+        <Modal onHideCart={props.onHideCart}>
+            {!error && !isDataSubmiting && !wasDataSendingSuccesfull && modalCart}
+            {isDataSubmiting && <p>idjot zagruzka!!!</p>}
+            {!error && wasDataSendingSuccesfull && <p>Zapros otpravlen</p>}
+            {error && <p>{error}</p>}
+            
+
 
         </Modal>
     )

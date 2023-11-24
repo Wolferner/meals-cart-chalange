@@ -41,8 +41,15 @@ const SubmitOrder =(props)=>{
 
     const confirmOrderHandler = (event)=>{
         event.preventDefault()
-        if(!isFormValid)
+        if(!isFormValid){
+            return
+        }
 
+        props.onSubmit({
+            name: inputName,
+            city: inputCity,
+            adress: inputAdress
+        })
 
 
         resetNameValues()
