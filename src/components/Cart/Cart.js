@@ -1,10 +1,14 @@
 import styles from './Cart.module.css'
 import Modal from '../UI/Modal'
-import { useContext } from 'react'
+import { useContext, useState} from 'react'
 import CartContext from '../../store/cart-context'
 import CartItem from './CartItem'
+import SubmitOrder from './SubmitOrder'
 
 const Cart = (props)=>{
+
+    const [isSubmitOrderAvailable, setIsSubmitOrderAvailable] = useState(false)
+
     const ctx = useContext(CartContext)
 
     const totalAmount = `${ctx.totalAmount.toFixed(2)}`
@@ -17,6 +21,10 @@ const Cart = (props)=>{
 
     const addCartItemHandler = (item)=>{
         ctx.addItem({...item, amount: 1})
+    }
+
+    const orderHandler = () =>{
+        setIsSubmitOrderAvailable(true)
     }
 
     const cartItems = (
@@ -38,9 +46,10 @@ const Cart = (props)=>{
                 <span>Summ</span>
                 <span>{totalAmount}</span>
             </div>
+            {isSubmitOrderAvailable && <SubmitOrder/>}
             <div className={styles.actions}>
                 <button className={styles['button--alt']} onClick={props.onHideCart}>Close</button>
-                {hasItems && <button className={styles.button}>Order</button> }
+                {hasItems && <button className={styles.button} onClick={orderHandler}>Order</button> }
             </div>
         </Modal>
     )

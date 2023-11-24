@@ -7,7 +7,7 @@ import styles from './MealList.module.css'
 const MealList =()=>{
   const [dummyMeals, setDummyMeals] = useState([])
   const [error, setError] = useState(null)
-  const [isLoading, setIsLoading] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const fetchDummyMeals = async () =>{
     setError(null)
@@ -33,10 +33,6 @@ const MealList =()=>{
     }catch(e){
       setError(e.message)
     }
-
-    if(error){
-      console.log(error)
-    }
     setIsLoading(false)
   }
 
@@ -54,11 +50,19 @@ const MealList =()=>{
     )
 
 
-    
+
     if(isLoading){
       return(
         <section className={styles.loading}>
           <p>IDJOT ZAGRUZKA....</p>
+        </section>
+      )
+    }
+
+    if(error){
+      return(
+        <section className={styles.error}>
+          <p>{error}</p>
         </section>
       )
     }
