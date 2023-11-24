@@ -9,27 +9,27 @@ const SubmitOrder =(props)=>{
         isValidInputValue: isValidInputName,
         hasInputError: hasNameInputError,
         inputValueChangeHandler: inputNameChangeHandler,
-        inputLostFocus: inputNameLostFocus,
+        inputLostFocusHandler: inputNameLostFocus,
         resetValues: resetNameValues
-    } = useInput((value) => value.trim !=='')
+    } = useInput((value) => value.trim() !=='')
 
     const {
         inputValue : inputCity,
         isValidInputValue: isValidInputCity,
         hasInputError: hasCityInputError,
         inputValueChangeHandler: inputCityChangeHandler,
-        inputLostFocus: inputCityLostFocus,
+        inputLostFocusHandler: inputCityLostFocus,
         resetValues: resetCityValues
-    } = useInput((value) => value.trim !=='')
+    } = useInput((value) => value.trim() !=='')
 
     const {
         inputValue : inputAdress,
         isValidInputValue: isValidInputAdress,
         hasInputError: hasAdressInputError,
         inputValueChangeHandler: inputAdressChangeHandler,
-        inputLostFocus: inputAdressLostFocus,
+        inputLostFocusHandler: inputAdressLostFocus,
         resetValues: resetAdressValues
-    } = useInput((value) => value.trim !=='')
+    } = useInput((value) => value.trim() !=='')
 
 
     let isFormValid = false
@@ -59,16 +59,19 @@ const SubmitOrder =(props)=>{
     return(
         <form onSubmit={confirmOrderHandler}>
             <div className={nameStyles}>
-                <label htmlFor='name'> Vvedite Name</label>
+                <label htmlFor='name'>  Name</label>
                 <input onChange={inputNameChangeHandler} onBlur={inputNameLostFocus} value={inputName} id='name' type='text'></input>
+                {hasNameInputError && <p>vvedite imja</p>}
             </div>
             <div className={cityStyles}>
-                <label htmlFor='city'> Vvedite City</label>
+                <label htmlFor='city'> City</label>
                 <input onChange={inputCityChangeHandler} onBlur={inputCityLostFocus} value={inputCity} id='city' type='text'></input>
+                {hasCityInputError && <p>vvedite city</p>}
             </div>
             <div className={adressStyles}>
-                <label htmlFor='adress'> Vvedite Adress</label>
+                <label htmlFor='adress'>  Adress</label>
                 <input onChange={inputAdressChangeHandler} onBlur={inputAdressLostFocus} value={inputAdress} id='adress' type='text'></input>
+                {hasAdressInputError && <p>vvedite adress</p>}
             </div>
             <div className={styles.actions}>
                 <button disabled={!isFormValid} className={styles.submit}>podtverditj</button>

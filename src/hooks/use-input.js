@@ -13,13 +13,14 @@ const useInput = (validateFunction) =>{
         setInputValue(event.target.value)
     }
 
-    const inputLostFocus = ()=>{
+    const inputLostFocusHandler = ()=>{
         setWasInputTouched(true)
     }
 
     const resetValues = ()=>{
-        setWasInputTouched(false)
         setInputValue('')
+        setWasInputTouched(false)
+   
     }
 
     return{
@@ -27,7 +28,7 @@ const useInput = (validateFunction) =>{
         isValidInputValue,
         hasInputError,
         inputValueChangeHandler,
-        inputLostFocus,
+        inputLostFocusHandler,
         resetValues
     }
 }
