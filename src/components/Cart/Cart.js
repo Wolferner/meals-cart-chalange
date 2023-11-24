@@ -39,6 +39,12 @@ const Cart = (props)=>{
                 onAdd={addCartItemHandler.bind(null, item)}  />)}
         </ul>)
 
+    const modalButtons = (            
+        <div className={styles.actions}>
+            <button className={styles['button--alt']} onClick={props.onHideCart}>Close</button>
+            {hasItems && <button className={styles.button} onClick={orderHandler}>Order</button> }
+        </div>)
+
     return(
         <Modal onHideCart={props.onHideCart}>
             {cartItems}
@@ -46,11 +52,9 @@ const Cart = (props)=>{
                 <span>Summ</span>
                 <span>{totalAmount}</span>
             </div>
-            {isSubmitOrderAvailable && <SubmitOrder/>}
-            <div className={styles.actions}>
-                <button className={styles['button--alt']} onClick={props.onHideCart}>Close</button>
-                {hasItems && <button className={styles.button} onClick={orderHandler}>Order</button> }
-            </div>
+            {isSubmitOrderAvailable && <SubmitOrder onCancel={props.onHideCart}/>}
+            {!isSubmitOrderAvailable && modalButtons}
+
         </Modal>
     )
 }
